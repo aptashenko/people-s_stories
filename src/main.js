@@ -6,19 +6,24 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import {useUserStore} from "@/stores/userStore.js";
-import i18n from "@/i18n/index.js";
+import { useUserStore } from '@/stores/userStore.js';
+import i18n from '@/i18n/index.js';
 import { vTooltip } from 'floating-vue'
 import Vue3Toastify from 'vue3-toastify';
 
-const app = createApp(App);
-app.use(i18n);
-app.use(createPinia())
-const userStore = useUserStore();
-await userStore.getUserData();
+async function initApp() {
+  const app = createApp(App);
+  app.use(i18n);
+  app.use(createPinia());
 
-app.use(Vue3Toastify, {autoClose: 3000});
-app.directive('tooltip', vTooltip);
-app.use(router)
+  const userStore = useUserStore();
+  await userStore.getUserData();
 
-app.mount('#app')
+  app.use(Vue3Toastify, { autoClose: 3000 });
+  app.directive('tooltip', vTooltip);
+  app.use(router);
+
+  app.mount('#app');
+}
+
+initApp();
